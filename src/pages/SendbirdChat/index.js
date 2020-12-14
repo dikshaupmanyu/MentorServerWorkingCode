@@ -72,10 +72,10 @@ class SendbirdChat extends Component {
         .getOpenChannelList(isInit, urlKeyword)
         .then(openChannelList => {
           this.setState({
-            channel: openChannelList[2]
+            channel: openChannelList[0]
           }, () => {
             SendBirdAction.getInstance()
-            .getMessageList(openChannelList[2])
+            .getMessageList(openChannelList[0])
             .then(msgList => {
               console.log('++++++++msgList+++++++', msgList);
               this.setState({
