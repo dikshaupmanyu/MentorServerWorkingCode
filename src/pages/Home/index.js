@@ -10,7 +10,7 @@ import HomeTwo from './components/HomeTwo';
 import Stock from './components/Stock';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SnackBar from 'my-react-snackbar';
-
+import Loader from 'react-loader-spinner';
 
 class Home extends Component {
     constructor() {
@@ -29,6 +29,7 @@ class Home extends Component {
             alertMessageStatus: false,
             alertMessage: "",
             currntdatess: [],
+            isLoading: true
         };    
     }
 
@@ -37,6 +38,7 @@ class Home extends Component {
         if (sData !== null) {
             this.setState({
                 storageData: JSON.parse(sData),
+                isLoading: true,
             }, () => {
                 this.demaoFun();
                 this.getStockData();
@@ -122,50 +124,53 @@ class Home extends Component {
         url: `${BASE_URL}/stockDetail/getAllStockOfUserByUserName?userName=${this.state.storageData.uname}`,
         })
         .then((response) => {
-        if (response.status === 200) {
-            const dataResult = response.data;
+            if (response.status === 200) {
+                const dataResult = response.data;
 
-            if(dataResult.length > 0){
+                if(dataResult.length > 0){
 
-            let users = [];
-            for(var i= dataResult.length - 1; i >= 0 ; i--){
-                users.push(dataResult[i].stockSymbol);
-            }
-
-            let deletdata = [];
-            for(var j= 0; j < dataResult.length ; j++){
-                deletdata.push({"stockSymbol" : dataResult[j].stockSymbol, "id" : dataResult[j].id});
-            }
-
-            this.setState({deletList: deletdata});
-
-            axios({
-                headers: { 
-                'Cookie': "ctoken=dd44d368ddc944ddb0cf27de108f0e56",
-                // 'Authorization': `Bearer ${parsedStorageData.tokendata}`,
-                },
-                method: 'get',
-                url: `https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols=${users}`,
-            })
-            .then((response) => {
-                if (response.status === 200) {
-                const result = response.data;
-                if(id != undefined){
-                    document.getElementById(id).style.display = "block";
+                let users = [];
+                for(var i= dataResult.length - 1; i >= 0 ; i--){
+                    users.push(dataResult[i].stockSymbol);
                 }
-                this.setState({stocklist:result})
+
+                let deletdata = [];
+                for(var j= 0; j < dataResult.length ; j++){
+                    deletdata.push({"stockSymbol" : dataResult[j].stockSymbol, "id" : dataResult[j].id});
                 }
-        
-            }) 
-            .catch((error) => {
-                console.log("+++++++++140++++++++++++", error);
-            });
+
+                this.setState({
+                    deletList: deletdata,
+                    isLoading: false,
+                });
+
+                axios({
+                    headers: { 
+                    'Cookie': "ctoken=dd44d368ddc944ddb0cf27de108f0e56",
+                    },
+                    method: 'get',
+                    url: `https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols=${users}`,
+                })
+                .then((response) => {
+                    if (response.status === 200) {
+                        const result = response.data;
+                        if(id != undefined){
+                            document.getElementById(id).style.display = "block";
+                        }
+                        this.setState({
+                            stocklist:result
+                        })
+                    }
+                }) 
+                .catch((error) => {
+                    console.log("+++++++++140++++++++++++", error);
+                });
 
 
-            } else {
-            this.setState({ stocklist: [] })
+                } else {
+                this.setState({ stocklist: [] })
+                }
             }
-        }
         }) 
         .catch((error) => {
         console.log("+++++++++150++++++++++++", error);
@@ -246,48 +251,60 @@ class Home extends Component {
                     </div>
        
                     <div className="col-md-9">
-                        <div className="row" style={{marginTop : "20px" , overflow : "hidden"}}>
-                            <div className="col-md-7" style={{overflowY: "none" , height: "100%" }}>
-                                {this.state.contacts.length != 0 ? 
-                                    <div className="container">
-                                        { this.state.currntdatess && this.state.contacts.filter(person => person.entryPoint != 0).map((item, i) =>    
-                                            <div>    
-                                                <p style={{color : "white" , textAlign : "end"}}> {this.state.currntdatess[i]} </p>      
-                                                <HomeTwo item={item} afun ={this.afun} />
+                        {!this.state.isLoading &&
+                            <div className="row" style={{marginTop : "20px" , overflow : "hidden"}}>
+                                <div className="col-md-7" style={{overflowY: "none" , height: "100%" }}>
+                                    {this.state.contacts.length != 0 ? 
+                                        <div className="container">
+                                            { this.state.currntdatess && this.state.contacts.filter(person => person.entryPoint != 0).map((item, i) =>    
+                                                <div>    
+                                                    <p style={{color : "white" , textAlign : "end"}}> {this.state.currntdatess[i]} </p>      
+                                                    <HomeTwo item={item} afun ={this.afun} />
+                                                </div>
+                                            )}
+                                        </div>
+                                    :
+                                        <div className="card text-white mb-3 testtoo">
+                                            <div className="card-header">
                                             </div>
-                                        )}
-                                    </div>
-                                :
-                                    <div className="card text-white mb-3 testtoo">
-                                        <div className="card-header">
+                                            <div className="card-body" style={{padding:"4px"}}>
+                                                <h5 style={{color : "black"}}>No Data Found</h5>
+                                            </div>
                                         </div>
-                                        <div className="card-body" style={{padding:"4px"}}>
-                                            <h5 style={{color : "black"}}>No Data Found</h5>
+                                    }            
+                                </div>      
+                                <div className="col-md-5">
+                                    <div className="container-fluid">
+                                        <span>
+                                            <Player 
+                                                handleStockddFunction={this.handleStockddFunction} 
+                                            />
+                                        </span>
+                                        <div className="card heading" style={{background: "#263b66" , color : "white" , border : "none"}}>
+                                            <table>
+                                                <td className="nname">Company Name</td>
+                                                <td>Price</td>
+                                                <td>Change</td>
+                                            </table>
                                         </div>
-                                    </div>
-                                }            
-                            </div>      
-                            <div className="col-md-5">
-                                <div className="container-fluid">
-                                    <span>
-                                        <Player 
-                                            handleStockddFunction={this.handleStockddFunction} 
+                                        <Stock 
+                                            stocklist={this.state.stocklist} 
+                                            deleteStock={this.deleteStock} 
                                         />
-                                    </span>
-                                    <div className="card heading" style={{background: "#263b66" , color : "white" , border : "none"}}>
-                                        <table>
-                                            <td className="nname">Company Name</td>
-                                            <td>Price</td>
-                                            <td>Change</td>
-                                        </table>
                                     </div>
-                                    <Stock 
-                                        stocklist={this.state.stocklist} 
-                                        deleteStock={this.deleteStock} 
-                                    />
                                 </div>
                             </div>
-                        </div>
+                        }
+                        {this.state.isLoading &&
+                            <div>
+                                <Loader
+                                    type="Puff"
+                                    color="#00BFFF"
+                                    height={50}
+                                    width={50}
+                                />
+                            </div>
+                        }
                    </div>
                 </div>
                 <SnackBar 
