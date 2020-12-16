@@ -93,22 +93,84 @@ class SendbirdChat extends Component {
     }
 
     sendMessage = () => {
-      SendBirdAction.getInstance().sendUserMessage({
-        channel: this.state.channel,
-        message: this.state.message,
-        handler: (message, error) => {
-          console.log(message);
-          this.setState({
-            messageList: [...this.state.messageList, message],
-            message: ''
-          })
-        }
-      });
+    //alert(this.state.message);
+    if(this.state.message != ""){
+     var formdata = new FormData();
+    formdata.append("channel", this.state.channel);
+    formdata.append("user_id", this.state.storageData.uname);
+    formdata.append("message", this.state.message);
+      var requestOptions = {
+      method: 'POST',
+      headers: {
+              'Api-Token': '71c717ba89d6ff310f997f7f731c87db2901364d'
+            },
+      body: formdata,
+      redirect: 'follow'
+    };
+
+      fetch(`https://api-30ac907b-4526-46cc-884f-14880440ca82.sendbird.com/v3/open_channels/TradeTipsPublicTest/messages`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+          var datak = JSON.stringify(result);
+          //alert(datak);
+          var dataResultp = JSON.parse(datak);  
+
+          if (result){
+            console.log(result);
+            const tempdata = SendBirdAction.getInstance().sendUserMessage({
+                channel: this.state.channel,
+                message: result.message,
+                handler: (message, error) => {
+                //console.log(message);
+                this.setState({
+                  messageList: [...this.state.messageList, message],
+                  message: ''
+                  })
+                   }            
+
+              });
+          }    
+         
+        // channel: this.state.channel,
+        // message: this.state.message,
+        // handler: (message, error) => {
+        //   console.log(message);
+        //   this.setState({
+        //     messageList: [...this.state.messageList, message],
+        //     message: ''
+        //   })
+        // }
+     }); 
+    } else {
+      alert("Message not send Empty")
+    }      
+    
     }
 
     onImageDrop(picture) {
-      const sendFile = picture[0];
-      if (sendFile) {
+     const sendFile = picture[0];
+     //alert(sendFile);
+     var formdata = new FormData();
+    formdata.append("message_type", "File");
+    formdata.append("user_id", this.state.storageData.uname);
+    formdata.append("file", sendFile);
+      var requestOptions = {
+      method: 'POST',
+      headers: {
+              'Api-Token': '71c717ba89d6ff310f997f7f731c87db2901364d'
+            },
+      body: formdata,
+      redirect: 'follow'
+    };
+
+      fetch(`https://api-30ac907b-4526-46cc-884f-14880440ca82.sendbird.com/v3/open_channels/TradeTipsPublicTest/messages`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+          var datak = JSON.stringify(result);
+          //alert(datak);
+          var dataResultp = JSON.parse(datak); 
+        if (result) {
+          console.log(result);
         const tempMessage = SendBirdAction.getInstance().sendFileMessage({
           channel: this.state.channel,
           file: sendFile,
@@ -118,7 +180,11 @@ class SendbirdChat extends Component {
             })
           }
         });
-      }
+
+       }
+
+      });
+      
     }
 
     render() {
@@ -186,7 +252,7 @@ class SendbirdChat extends Component {
                               class="input-text-area" 
                               placeholder="Write a chat..." 
                               value={this.state.message} 
-                              onChange={this.handleMessageChange}
+                              onChange={this.handleMessageChange} required="required"
                             />
                             <button onClick={this.sendMessage}>Send</button>
                           </div>
