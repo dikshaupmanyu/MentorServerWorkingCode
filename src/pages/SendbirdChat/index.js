@@ -27,7 +27,8 @@ class SendbirdChat extends Component {
         channel: '',
         scrollTop: 0,
         selectedMessageId: '',
-        scrollToBottomHeight: ''
+        scrollToBottomHeight: '',
+        //resData : [],
       }
       this.onImageDrop = this.onImageDrop.bind(this);
       this.myRef = React.createRef();
@@ -79,10 +80,10 @@ class SendbirdChat extends Component {
         .getOpenChannelList(isInit, urlKeyword)
         .then(openChannelList => {
           this.setState({
-            channel: openChannelList[2]
+            channel: openChannelList[0]
           }, () => {
             SendBirdAction.getInstance()
-            .getMessageList(openChannelList[2])
+            .getMessageList(openChannelList[0])
             .then(msgList => {
               console.log('++++++++msgList+++++++', msgList);
               this.setState({
@@ -123,6 +124,11 @@ class SendbirdChat extends Component {
             message: response.data.message,
             createdAt: response.data.created_at,
           }
+          console.log(this.state.messageList);
+           //this._getOpenChannelList();
+           console.log(resData);
+           //let fdata = this.state.messageList.push(resData);
+           //console.log(fdata);
           this.setState({
             messageList: [...this.state.messageList, resData],
             message: ''
