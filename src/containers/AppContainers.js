@@ -48,7 +48,7 @@ class AppContainer extends Component {
                             <Route exact path="/tip" component={Tip} {...this.props}/>
                             <Route exact path="/room" component={Room} {...this.props}/>
                             <Route exact path="/chatmanage" component={ChatManage} {...this.props}/>
-                            <Route exact path="/sendbirdchat" component={SendbirdChat} {...this.props}/>
+                            <Route exact path="/chat" component={SendbirdChat} {...this.props}/>
                             <Route exact path="/">
                                 {this.state.tokendata ? 
                                     <Redirect to="/home" />
