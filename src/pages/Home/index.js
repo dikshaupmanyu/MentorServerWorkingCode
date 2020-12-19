@@ -268,7 +268,7 @@ class Home extends Component {
                                             <div className="card-header">
                                             </div>
                                             <div className="card-body" style={{padding:"4px"}}>
-                                                <h5 style={{color : "black"}}>No Data Found</h5>
+                                               
                                             </div>
                                         </div>
                                     }            
