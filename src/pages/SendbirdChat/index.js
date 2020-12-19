@@ -43,18 +43,18 @@ class SendbirdChat extends Component {
     //   }
     // }
 
-    // componentDidMount() {
-    //   const sData = localStorage.getItem('allTokenData');
-    //   if (sData !== null) {
-    //     this.setState({
-    //         storageData: JSON.parse(sData),
-    //         scrollToBottomHeight: this.myRef.current.scrollHeight
-    //     }, () => {
-    //       this._connectSendbird();
-    //       this.scrollToBottom();
-    //     })
-    //   }
-    // }
+    componentDidMount() {
+      const sData = localStorage.getItem('allTokenData');
+      if (sData !== null) {
+        this.setState({
+            storageData: JSON.parse(sData),
+            // scrollToBottomHeight: this.myRef.current.scrollHeight
+        }, () => {
+          // this._connectSendbird();
+          // this.scrollToBottom();
+        })
+      }
+    }
 
     // componentDidUpdate () {
     //   this.scrollToBottom();
