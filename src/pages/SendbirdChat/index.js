@@ -217,6 +217,9 @@ class SendbirdChat extends Component {
     //   })
     // }
 
+  // <iframe width="1000" height="600" src={`http://ec2-3-84-99-99.compute-1.amazonaws.com:9000/chat.html?userid=${this.state.storageData.uname}&nickname=${this.state.storageData.uname}`} id="my-iframe" scrolling="yes"></iframe>
+
+
     render() {
       return (
           <div className="container-fluid" style={{background: "#263b66" , color : "#fff"}}>  
@@ -228,7 +231,8 @@ class SendbirdChat extends Component {
                    <div className="col-md-9 mx-auto" style={{height: "800px"}}>   
                      <div className="row" style={{marginTop : "60px" , overflow : "hidden"}}>        
                       <div id="my-div">            
-                       <iframe width="1000" height="600" src={`http://ec2-3-84-99-99.compute-1.amazonaws.com:9000/chat.html?userid=${this.state.storageData.uname}&nickname=${this.state.storageData.uname}`} id="my-iframe" scrolling="yes"></iframe>
+                       <iframe width="1000" height="600" src={`https://mentor.tradetipsapp.com:8080/?uid=${this.state.storageData.uid}&uname=${this.state.storageData.uname}`} id="my-iframe" scrolling="yes"></iframe>
+
                      </div>
                      </div>
                     </div>
