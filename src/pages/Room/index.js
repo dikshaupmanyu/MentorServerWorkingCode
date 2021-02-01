@@ -67,7 +67,7 @@ this.setState({tokendata:id})
              <li><h5><b>3. The app</b> was designed to help anyone make money and beat the market. So, as long as you don’t stand in the way of that ... we are good to go.</h5> </li>
             </ul>
              <br/>
-              <Link to={`/chat`}>
+              <Link to={`/firebasechat`}>
                  <input type="button" value="Enter Room" className="nav-link"/>
               </Link>
                <br></br>
