@@ -10,6 +10,8 @@ import ChatManage from '../pages/ChatManage';
 // import Invite from './components/Invite';
 import Room from '../pages/Room';
 import SendbirdChat from '../pages/SendbirdChat';
+import Firebase from '../pages/Firebase';
+
 // import ChatSetting from './components/ChatSetting';
 
 class AppContainer extends Component {
@@ -49,6 +51,8 @@ class AppContainer extends Component {
                             <Route exact path="/room" component={Room} {...this.props}/>
                             <Route exact path="/chatmanage" component={ChatManage} {...this.props}/>
                             <Route exact path="/chat" component={SendbirdChat} {...this.props}/>
+                            <Route exact path="/firebasechat" component={Firebase} {...this.props}/>
+
                             <Route exact path="/">
                                 {this.state.tokendata ? 
                                     <Redirect to="/home" />
