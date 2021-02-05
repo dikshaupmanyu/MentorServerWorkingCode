@@ -124,9 +124,9 @@ class Landing extends Component {
                                     <div className="form-group">
                                         <label htmlFor="password">Password</label>
                                         <input
-                                            type="password"
+                                            type="text"
                                             className="form-control"
-                                            name="password"
+                                            name="password" id="pswrd"
                                             placeholder="Password"
                                             value={values.password}
                                             onChange={handleChange}
