@@ -103,8 +103,8 @@ class Stock extends Component {
 
                                    {
                                      stocklist[keyName].quote.change == "" ?
-                                    <span>0.00</span>:
-                                    <span>{(stocklist[keyName].quote.change)}</span>
+                                    <span>0.00</span> :
+                                    <span>{(stocklist[keyName].quote.change.toFixed(2))}</span>
                                    }
 
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-arrow-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
